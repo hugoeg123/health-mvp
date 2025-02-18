@@ -8,7 +8,7 @@ import { setupPassport } from './passport-config';
 import { errorHandler } from './middleware/errorHandler';
 import { apiLimiter, authLimiter } from './middleware/rateLimiter';
 import RedisStore from 'connect-redis';
-import { createClient } from 'redis';
+import redisClient, { connectToRedis } from './config/database';
 import { logger } from './utils/logger';
 import { Server } from 'http';
 
@@ -18,7 +18,7 @@ const app = express();
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
     ? process.env.ALLOWED_ORIGINS?.split(',') 
-    : 'http://localhost:5173',
+    : 'http://localhost:3001',
   credentials: true
 }));
 
@@ -31,24 +31,14 @@ app.use('/api/', apiLimiter);
 app.use('/api/auth', authLimiter);
 
 // Configuração da sessão
-const redisClient = createClient({
-  url: process.env.SESSION_STORE || 'redis://localhost:6379'
-});
-
-redisClient.on('error', (err) => {
-  logger.error('Redis connection error:', err);
-});
-
-redisClient.on('connect', () => {
-  logger.info('Successfully connected to Redis');
-});
-
-await redisClient.connect();
-
 const RedisSessionStore = RedisStore(session);
 
-// Session configuration
-app.use(
+// Initialize server function
+const initializeServer = async () => {
+  await connectToRedis();
+
+  // Session configuration
+  app.use(
   session({
     store: new RedisSessionStore({ client: redisClient }),
     secret: process.env.SESSION_SECRET || 'mvp-secret',
@@ -105,3 +95,9 @@ const gracefulShutdown = async (signal: string) => {
 
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
+// Start the server
+initializeServer().catch(err => {
+  logger.error('Failed to initialize server:', err);
+  process.exit(1);
+});
