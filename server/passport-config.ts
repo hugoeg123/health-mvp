@@ -1,13 +1,13 @@
-import { Strategy as LocalStrategy } from 'passport-local';
-import passport from 'passport';
-import bcrypt from 'bcrypt';
-import { storage } from './storage';
-import { APIError } from './middleware/errorHandler';
+import { Strategy as LocalStrategy } from 'passport-local'
+import passport from 'passport'
+import bcrypt from 'bcrypt'
+import { storage } from './storage'
+import { APIError } from './middleware/errorHandler'
 
 interface User {
-  id: number;
-  email: string;
-  passwordHash: string;
+  id: number
+  email: string
+  passwordHash: string
 }
 
 /**
@@ -20,36 +20,36 @@ export function setupPassport(passportInstance: typeof passport) {
       { usernameField: 'email', passwordField: 'password' },
       async (email, password, done) => {
         try {
-          const user = await storage.findUserByEmail(email);
+          const user = await storage.findUserByEmail(email)
           if (!user) {
-            return done(null, false, { message: 'Usuário não encontrado' });
+            return done(null, false, { message: 'Usuário não encontrado' })
           }
           // Compara a senha usando bcrypt
-          const match = await bcrypt.compare(password, user.passwordHash);
+          const match = await bcrypt.compare(password, user.passwordHash)
           if (!match) {
-            return done(null, false, { message: 'Senha incorreta' });
+            return done(null, false, { message: 'Senha incorreta' })
           }
-          return done(null, user);
+          return done(null, user)
         } catch (err) {
-          return done(err);
+          return done(err)
         }
-      }
-    )
-  );
+      },
+    ),
+  )
 
   passportInstance.serializeUser((user: User, done) => {
-    done(null, user.id);
-  });
+    done(null, user.id)
+  })
 
   passportInstance.deserializeUser(async (id: number, done) => {
     try {
-      const user = await storage.findUserById(id);
+      const user = await storage.findUserById(id)
       if (!user) {
-        return done(new APIError(401, 'Session inválida - usuário não encontrado'));
+        return done(new APIError(401, 'Session inválida - usuário não encontrado'))
       }
-      done(null, user);
+      done(null, user)
     } catch (err) {
-      done(new APIError(500, 'Erro ao recuperar usuário', err));
+      done(new APIError(500, 'Erro ao recuperar usuário', err))
     }
-  });
+  })
 }

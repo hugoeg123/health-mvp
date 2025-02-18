@@ -26,13 +26,11 @@ const AuthContext = createContext<AuthContextType>({
   logout: () => {
     console.warn('AuthContext not initialized');
   },
-  error: null
+  error: null,
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem('token')
-  );
+  const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<Error | null>(null);
 
@@ -83,7 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user,
         login,
         logout,
-        error
+        error,
       }}
     >
       {children}

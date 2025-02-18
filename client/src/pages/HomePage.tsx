@@ -10,7 +10,7 @@ export default function HomePage() {
     const loadInitialData = async () => {
       try {
         // Simulate loading time
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         setIsLoading(false);
       } catch (err) {
         setError(err instanceof Error ? err : new Error('Failed to load data'));
@@ -38,7 +38,8 @@ export default function HomePage() {
               Bem-vindo ao Health MVP
             </h1>
             <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-              Este é o ponto de entrada da aplicação. Aqui você encontrará todas as funcionalidades necessárias para gerenciar sua saúde.
+              Este é o ponto de entrada da aplicação. Aqui você encontrará todas as funcionalidades
+              necessárias para gerenciar sua saúde.
             </p>
           </div>
         </div>

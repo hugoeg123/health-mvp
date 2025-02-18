@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import type { AxiosResponse } from 'axios';
 
 interface CacheItem<T> {
   data: T;
@@ -10,7 +10,8 @@ class CacheManager {
   private cache: Map<string, CacheItem<any>>;
   private readonly defaultTTL: number;
 
-  constructor(defaultTTL = 5 * 60 * 1000) { // 5 minutes default TTL
+  constructor(defaultTTL = 5 * 60 * 1000) {
+    // 5 minutes default TTL
     this.cache = new Map();
     this.defaultTTL = defaultTTL;
   }
@@ -54,7 +55,7 @@ export const cacheManager = new CacheManager();
 export function withCache<T>(
   key: string,
   fetchFn: () => Promise<AxiosResponse<T>>,
-  ttl?: number
+  ttl?: number,
 ): Promise<T> {
   const cachedData = cacheManager.get<T>(key);
   if (cachedData) return Promise.resolve(cachedData);

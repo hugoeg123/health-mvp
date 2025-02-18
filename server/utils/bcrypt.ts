@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt'
 
 /**
  * Utility function to hash passwords using bcrypt
@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt';
  * @returns Promise<string> The hashed password
  */
 export async function hashPassword(password: string, saltRounds: number = 10): Promise<string> {
-  return bcrypt.hash(password, saltRounds);
+  return bcrypt.hash(password, saltRounds)
 }
 
 /**
@@ -17,5 +17,5 @@ export async function hashPassword(password: string, saltRounds: number = 10): P
  * @returns Promise<boolean> True if the password matches the hash
  */
 export async function comparePassword(password: string, hash: string): Promise<boolean> {
-  return bcrypt.compare(password, hash);
+  return bcrypt.compare(password, hash)
 }

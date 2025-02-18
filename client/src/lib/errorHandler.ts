@@ -55,5 +55,5 @@ export const errorMessages = {
   NOT_FOUND: 'The requested resource was not found.',
   VALIDATION_ERROR: 'Please check your input and try again.',
   SERVER_ERROR: 'An unexpected error occurred. Please try again later.',
-  SESSION_EXPIRED: 'Your session has expired. Please log in again.'
+  SESSION_EXPIRED: 'Your session has expired. Please log in again.',
 };

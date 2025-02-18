@@ -14,10 +14,14 @@ export default function Navigation() {
   return (
     <nav className="bg-gray-800 text-white p-4 mb-4 flex justify-between items-center">
       <div>
-        <Link className="mr-4 hover:text-gray-300 transition-colors" to="/">Home</Link>
+        <Link className="mr-4 hover:text-gray-300 transition-colors" to="/">
+          Home
+        </Link>
         {isAuthenticated ? (
           <>
-            <Link className="mr-4 hover:text-gray-300 transition-colors" to="/profile">Profile</Link>
+            <Link className="mr-4 hover:text-gray-300 transition-colors" to="/profile">
+              Profile
+            </Link>
             <button
               onClick={handleLogout}
               className="text-white hover:text-gray-300 transition-colors"
@@ -26,7 +30,9 @@ export default function Navigation() {
             </button>
           </>
         ) : (
-          <Link className="hover:text-gray-300 transition-colors" to="/auth">Login/Register</Link>
+          <Link className="hover:text-gray-300 transition-colors" to="/auth">
+            Login/Register
+          </Link>
         )}
       </div>
     </nav>

@@ -21,13 +21,13 @@ export default function DoctorProfile() {
     const loadDoctorData = async () => {
       try {
         // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         // Mock data
         setDoctor({
           id: id || '1',
           name: 'Dr. Example',
           specialty: 'Cardiologia',
-          schedule: ['Segunda 9h-17h', 'Quarta 9h-17h', 'Sexta 9h-17h']
+          schedule: ['Segunda 9h-17h', 'Quarta 9h-17h', 'Sexta 9h-17h'],
         });
       } catch (err) {
         setError(err instanceof Error ? err : new Error('Failed to load doctor data'));
@@ -81,10 +81,7 @@ export default function DoctorProfile() {
               <h2 className="text-lg font-medium text-gray-900">Horários Disponíveis</h2>
               <ul className="mt-3 grid grid-cols-1 gap-3">
                 {doctor.schedule.map((time, index) => (
-                  <li
-                    key={index}
-                    className="text-sm text-gray-600 bg-gray-50 rounded-md px-3 py-2"
-                  >
+                  <li key={index} className="text-sm text-gray-600 bg-gray-50 rounded-md px-3 py-2">
                     {time}
                   </li>
                 ))}

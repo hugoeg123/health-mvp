@@ -27,7 +27,7 @@ export default function PatientProfile() {
     const loadPatientData = async () => {
       try {
         // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         // Mock data
         setPatient({
           id: '1',
@@ -35,8 +35,8 @@ export default function PatientProfile() {
           email: 'joao@example.com',
           appointments: [
             { id: '1', doctorName: 'Dr. Example', date: '2024-02-15 14:00', status: 'scheduled' },
-            { id: '2', doctorName: 'Dra. Sample', date: '2024-02-10 09:30', status: 'completed' }
-          ]
+            { id: '2', doctorName: 'Dra. Sample', date: '2024-02-10 09:30', status: 'completed' },
+          ],
         });
       } catch (err) {
         setError(err instanceof Error ? err : new Error('Failed to load patient data'));
@@ -98,15 +98,15 @@ export default function PatientProfile() {
                         appointment.status === 'scheduled'
                           ? 'bg-blue-100 text-blue-800'
                           : appointment.status === 'completed'
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-red-100 text-red-800'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
                       }`}
                     >
                       {appointment.status === 'scheduled'
                         ? 'Agendada'
                         : appointment.status === 'completed'
-                        ? 'Realizada'
-                        : 'Cancelada'}
+                          ? 'Realizada'
+                          : 'Cancelada'}
                     </span>
                   </div>
                 ))}

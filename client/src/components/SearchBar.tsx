@@ -16,7 +16,7 @@ export default function SearchBar() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <button 
+      <button
         onClick={handleSearch}
         className="text-gray-500 hover:text-gray-700 transition-colors"
       >

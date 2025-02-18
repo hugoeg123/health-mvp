@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+build/
+.next/
+*.min.js
+*.d.ts
+.git
+.cache
+package.json
+tsconfig.json
+*.md

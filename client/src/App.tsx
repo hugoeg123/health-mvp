@@ -39,14 +39,22 @@ const router = createBrowserRouter([
       { path: 'auth', element: <AuthPage /> },
       {
         path: 'doctors/:id',
-        element: <ProtectedRoute><DoctorProfile /></ProtectedRoute>
+        element: (
+          <ProtectedRoute>
+            <DoctorProfile />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'profile',
-        element: <ProtectedRoute><PatientProfile /></ProtectedRoute>
-      }
-    ]
-  }
+        element: (
+          <ProtectedRoute>
+            <PatientProfile />
+          </ProtectedRoute>
+        ),
+      },
+    ],
+  },
 ]);
 
 const App = () => (

@@ -99,9 +99,7 @@ export default function AuthPage() {
             </div>
           </div>
 
-          {errorMsg && (
-            <div className="text-red-500 text-sm text-center">{errorMsg}</div>
-          )}
+          {errorMsg && <div className="text-red-500 text-sm text-center">{errorMsg}</div>}
 
           <div>
             <button
@@ -118,9 +116,7 @@ export default function AuthPage() {
             className="text-indigo-600 hover:text-indigo-500"
             onClick={() => setIsLogin(!isLogin)}
           >
-            {isLogin
-              ? 'Need an account? Sign up'
-              : 'Already have an account? Sign in'}
+            {isLogin ? 'Need an account? Sign up' : 'Already have an account? Sign in'}
           </button>
         </div>
       </div>

@@ -1,0 +1,9 @@
+node_modules/
+dist/
+coverage/
+build/
+.next/
+*.min.js
+*.d.ts
+*.css
+*.svg

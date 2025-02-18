@@ -7,7 +7,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Botão flutuante do menu no canto superior esquerdo */}
-      <button 
+      <button
         className="fixed top-4 left-4 z-50 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300 transition-colors"
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -15,11 +15,11 @@ export default function Sidebar() {
       </button>
 
       {/* Sidebar */}
-      <div 
+      <div
         className={`fixed top-0 left-0 h-full bg-white w-64 shadow-lg transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out z-40`}
       >
-        <button 
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700" 
+        <button
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
           onClick={() => setIsOpen(false)}
         >
           <span className="material-icons">close</span>
@@ -27,8 +27,8 @@ export default function Sidebar() {
         <nav className="p-8 pt-16">
           <ul className="space-y-4">
             <li>
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="flex items-center text-gray-700 hover:text-blue-600 transition-colors"
                 onClick={() => setIsOpen(false)}
               >
@@ -37,8 +37,8 @@ export default function Sidebar() {
               </Link>
             </li>
             <li>
-              <Link 
-                to="/profile" 
+              <Link
+                to="/profile"
                 className="flex items-center text-gray-700 hover:text-blue-600 transition-colors"
                 onClick={() => setIsOpen(false)}
               >
@@ -47,8 +47,8 @@ export default function Sidebar() {
               </Link>
             </li>
             <li>
-              <Link 
-                to="/doctors/1" 
+              <Link
+                to="/doctors/1"
                 className="flex items-center text-gray-700 hover:text-blue-600 transition-colors"
                 onClick={() => setIsOpen(false)}
               >
@@ -62,7 +62,7 @@ export default function Sidebar() {
 
       {/* Overlay */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 z-30"
           onClick={() => setIsOpen(false)}
         />
