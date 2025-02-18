@@ -1,51 +1,45 @@
 import winston from 'winston';
-import path from 'path';
+import 'winston-daily-rotate-file';
 
-// Configure Winston logger
-const logger = winston.createLogger({
-  level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+// Set default log level based on environment
+const LOG_LEVEL = process.env.NODE_ENV === 'development' ? 'debug' : 'info';
+
+// Configure log rotation transport
+const fileRotateTransport = new winston.transports.DailyRotateFile({
+  filename: 'logs/mvp-%DATE%.log',
+  datePattern: 'YYYY-MM-DD',
+  maxSize: '20m',
+  maxFiles: '14d',
+  zippedArchive: true
+});
+
+export const logger = winston.createLogger({
+  level: LOG_LEVEL,
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.errors({ stack: true }),
-    winston.format.splat(),
-    winston.format.json()
+    winston.format.printf(
+      ({ level, message, timestamp, ...metadata }) => {
+        let msg = `${timestamp} [${level.toUpperCase()}]: ${message}`;
+        if (Object.keys(metadata).length > 0) {
+          msg += ` ${JSON.stringify(metadata)}`;
+        }
+        return msg;
+      }
+    )
   ),
-  defaultMeta: { service: 'mvp-api' },
   transports: [
-    // Console transport for development
     new winston.transports.Console({
       format: winston.format.combine(
         winston.format.colorize(),
         winston.format.simple()
       )
     }),
-    // File transport for production
-    new winston.transports.File({
-      filename: path.join('logs', 'error.log'),
-      level: 'error',
-      maxsize: 5242880, // 5MB
-      maxFiles: 5
-    }),
-    new winston.transports.File({
-      filename: path.join('logs', 'combined.log'),
-      maxsize: 5242880, // 5MB
-      maxFiles: 5
-    })
+    fileRotateTransport
   ]
 });
 
-// Add Morgan-style request logging
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(
-    new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.printf(
-          info => `${info.timestamp} ${info.level}: ${info.message}`
-        )
-      )
-    })
-  );
-}
-
-export default logger;
+// Add error event handler for the rotate transport
+fileRotateTransport.on('rotate', function(oldFilename, newFilename) {
+  logger.info('Log file rotated', { oldFilename, newFilename });
+});

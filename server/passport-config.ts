@@ -2,6 +2,13 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import passport from 'passport';
 import bcrypt from 'bcrypt';
 import { storage } from './storage';
+import { APIError } from './middleware/errorHandler';
+
+interface User {
+  id: number;
+  email: string;
+  passwordHash: string;
+}
 
 /**
  * Configuração do Passport com a estratégia Local.
@@ -30,16 +37,19 @@ export function setupPassport(passportInstance: typeof passport) {
     )
   );
 
-  passportInstance.serializeUser((user: any, done) => {
+  passportInstance.serializeUser((user: User, done) => {
     done(null, user.id);
   });
 
   passportInstance.deserializeUser(async (id: number, done) => {
     try {
       const user = await storage.findUserById(id);
+      if (!user) {
+        return done(new APIError(401, 'Session inválida - usuário não encontrado'));
+      }
       done(null, user);
     } catch (err) {
-      done(err);
+      done(new APIError(500, 'Erro ao recuperar usuário', err));
     }
   });
 }

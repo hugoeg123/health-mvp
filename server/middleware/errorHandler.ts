@@ -23,28 +23,44 @@ export function errorHandler(err: any, req: Request, res: Response, next: NextFu
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Internal Server Error';
 
+  // Enhanced logging with request context
+  const logContext = {
+    path: req.path,
+    method: req.method,
+    ip: req.ip,
+    userId: req.user?.id,
+    timestamp: new Date().toISOString()
+  };
+
   // Log error with appropriate level based on status code
   if (statusCode >= 500) {
     logger.error(`${statusCode} - ${message}`, {
+      ...logContext,
       error: err,
-      stack: err.stack,
-      path: req.path,
-      method: req.method,
-      ip: req.ip
+      stack: err.stack
     });
   } else {
-    logger.warn(`${statusCode} - ${message}`, {
+    logger.warn(`${statusCode} - ${message}`, logContext);
+  }
+
+  // Prepare error response based on environment
+  const errorResponse = {
+    error: {
+      message: process.env.NODE_ENV === 'production' ? 'Internal Server Error' : message,
+      status: statusCode
+    }
+  };
+
+  // Add additional debug information in non-production environments
+  if (process.env.NODE_ENV !== 'production') {
+    Object.assign(errorResponse.error, {
+      details: err.details || null,
+      stack: err.stack,
       path: req.path,
-      method: req.method,
-      ip: req.ip
+      timestamp: new Date().toISOString()
     });
   }
 
   // Send response
-  res.status(statusCode).json({
-    error: {
-      message,
-      details: process.env.NODE_ENV === 'development' ? err.details || err.stack : undefined
-    }
-  });
+  res.status(statusCode).json(errorResponse);
 }
